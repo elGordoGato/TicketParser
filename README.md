@@ -28,6 +28,10 @@ java, которая прочитает файл tickets.json и
 
 ## Запуск приложения:
 
+1) > `git clone https://github.com/elGordoGato/TicketParser.git`
+   
+2) > `cd TicketParser/`
+
 1) Находясь в корневой папке собрать проект 
     > `mvn clean package`
 2) Запустить сгенерированный jar-файл
