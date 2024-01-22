@@ -1,12 +1,8 @@
 package org.elgordogato;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class Ticket {
     private String departureCity;
     private String departureTime;

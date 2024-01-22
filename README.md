@@ -17,7 +17,7 @@ java, которая прочитает файл tickets.json и
 
 Программа читает данные из файла указанного в аргументах командной строки (`resources/tickets.json`). 
 
-И записывает данные в файл `resources/output.txt`, а также выводит результат в консоль
+Результаты выводятся в консоль и записываются в файл `resources/output.txt`.
 
 ---
 
@@ -28,11 +28,13 @@ java, которая прочитает файл tickets.json и
 
 ## Запуск приложения:
 
-1) > `git clone https://github.com/elGordoGato/TicketParser.git`
+1) Склонировать репозиторий 
+    > `git clone https://github.com/elGordoGato/TicketParser.git`
    
-2) > `cd TicketParser/`
+2) Перейти в корневую директорию проекта
+    > `cd TicketParser/`
 
-1) Находясь в корневой папке собрать проект 
+3) Находясь в корневой папке собрать проект 
     > `mvn clean package`
-2) Запустить сгенерированный jar-файл
+4) Запустить сгенерированный jar-файл
     > `java -jar target/TicketParser-1.0-SNAPSHOT.jar resources/tickets.json`
