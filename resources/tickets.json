@@ -1,0 +1,43 @@
+﻿{
+  "tickets": [{
+    "departureCity": "Владивосток",
+    "departureTime": "12.01.24 13:00",
+    "departureTimeZone": 7,
+    "arrivalCity": "Тель-Авив",
+    "arrivalTime": "13.01.24 06:00",
+    "arrivalTimeZone": 2,
+    "carrier": "S7",
+    "transfers": 1,
+    "price": 15000
+  }, {
+    "departureCity": "Владивосток",
+    "departureTime": "13.01.24 15:00",
+    "departureTimeZone": 7,
+    "arrivalCity": "Тель-Авив",
+    "arrivalTime": "14.01.24 12:00",
+    "arrivalTimeZone": 2,
+    "carrier": "S7",
+    "transfers": 2,
+    "price": 15000
+  }, {
+    "departureCity": "Владивосток",
+    "departureTime": "12.01.24 23:00",
+    "departureTimeZone": 7,
+    "arrivalCity": "Тель-Авив",
+    "arrivalTime": "13.01.24 02:15",
+    "arrivalTimeZone": 2,
+    "carrier": "S7",
+    "transfers": 0,
+    "price": 15000
+  }, {
+    "departureCity": "Владивосток",
+    "departureTime": "12.01.24 13:00",
+    "departureTimeZone": 7,
+    "arrivalCity": "Тель-Авив",
+    "arrivalTime": "13.01.24 06:30",
+    "arrivalTimeZone": 2,
+    "carrier": "Airhad",
+    "transfers": 1,
+    "price": 20000
+  }]
+}

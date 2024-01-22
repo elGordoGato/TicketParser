@@ -12,11 +12,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TicketsParser {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -24,9 +27,9 @@ public class TicketsParser {
             return;
         }
         final String sourceFile = args[0];
-        final String resultFileName = "result.txt";
-        String departure = "Vladivostok";
-        String arrival = "Tel Aviv";
+        final String outputName = "resources/output.txt";
+        String departure = "Владивосток";
+        String arrival = "Тель-Авив";
 
         List<Ticket> tickets = getTickets(sourceFile).stream()
                 .filter(ticket -> (ticket.getDepartureCity().equals(departure)
@@ -34,7 +37,7 @@ public class TicketsParser {
                 .collect(Collectors.toList());
         Map<String, Duration> minFlightTime = findMinFlightTime(tickets);
         Double medianAvgDiff = findMedianAvgDiff(tickets);
-        writeToFile(resultFileName, departure, arrival, minFlightTime, medianAvgDiff);
+        writeToFile(outputName, departure, arrival, minFlightTime, medianAvgDiff);
     }
 
     private static Map<String, Duration> findMinFlightTime(List<Ticket> tickets) {
@@ -49,8 +52,8 @@ public class TicketsParser {
                             ticket.getArrivalTime(), FORMATTER)
                     .atZone(ZoneOffset.ofHours(ticket.getArrivalTimeZone()))
                     .toInstant();
-            Duration duration = Duration.between(arrivalTime, departureTime);
-            if (!minFlightTime.containsKey(carrier) || duration.compareTo(minFlightTime.get(carrier)) > 0) {
+            Duration duration = Duration.between(departureTime, arrivalTime);
+            if (!minFlightTime.containsKey(carrier) || duration.compareTo(minFlightTime.get(carrier)) < 0) {
                 minFlightTime.put(carrier, duration);
             }
         }
@@ -63,10 +66,12 @@ public class TicketsParser {
         }
         tickets.sort(Comparator.comparingDouble(Ticket::getPrice));
         int middle = tickets.size() / 2;
+        double avgPrice = tickets.stream().mapToDouble(Ticket::getPrice).sum() / tickets.size();
+        double medianPrice;
         if (tickets.size() % 2 == 1) {
-            return tickets.get(middle).getPrice();
-        }
-        return (tickets.get(middle - 1).getPrice() + tickets.get(middle).getPrice()) / 2;
+            medianPrice = tickets.get(middle).getPrice();
+        } else medianPrice = (tickets.get(middle - 1).getPrice() + tickets.get(middle).getPrice()) / 2;
+        return avgPrice - medianPrice;
     }
 
 
@@ -82,24 +87,31 @@ public class TicketsParser {
         }
     }
 
-    private static void writeToFile(String resultFileName, String departure, String arrival,
+    private static void writeToFile(String outputName, String departure, String arrival,
                                     Map<String, Duration> minFlightTime, Double medianAvgDiff) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(resultFileName))) {
-            writer.println(String.format(
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(outputName))) {
+            output(String.format(
                     "Минимальное время полета между городами %s и %s для каждого авиаперевозчика:",
-                    departure, arrival));
+                    departure, arrival), writer);
             for (Map.Entry<String, Duration> entry : minFlightTime.entrySet()) {
-                writer.println(entry.getKey() + ": " + formatDuration(entry.getValue()));
+                output(entry.getKey() + ": " + formatDuration(entry.getValue()), writer);
             }
-            writer.println(String.format(
+            output(String.format(
                     "Разница между средней ценой и медианой для полета между городами %s и %s:",
-                    departure, arrival));
-            writer.println(String.format("%.2f", medianAvgDiff) + " руб.");
+                    departure, arrival), writer);
+            output(String.format("%.2f", medianAvgDiff) + " руб.", writer);
         } catch (IOException e) {
             System.out.println("Произошла ошибка при записи в файл:");
             e.printStackTrace();
         }
     }
+
+    private static void output(String msg, PrintWriter writer) {
+        System.out.println(msg);
+        writer.println(msg);
+    }
+
 
     private static String formatDuration(Duration duration) {
         long hours = duration.toHours();
