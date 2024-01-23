@@ -4,13 +4,15 @@ import lombok.Data;
 
 @Data
 public class Ticket {
-    private String departureCity;
-    private String departureTime;
-    private int departureTimeZone;
-    private String arrivalCity;
-    private String arrivalTime;
-    private int arrivalTimeZone;
+    private String origin;
+    private String origin_name;
+    private String destination;
+    private String destination_name;
+    private String departure_date;
+    private String departure_time;
+    private String arrival_date;
+    private String arrival_time;
     private String carrier;
-    private int transfers;
-    private double price;
+    private int stops;
+    private int price;
 }
